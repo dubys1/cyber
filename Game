@@ -1,0 +1,274 @@
+
+/*
+* Description: A Rock/Paper/Scissors game
+*
+* Author: Sergey Dubinsky
+*
+* Date: 11/1/2019
+*/
+
+//Pre processor area
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <time.h>
+
+
+//Global area / function prototypes
+char determine_Outcome (char,char); 
+char determine_Comp_Choice(char);
+int flush_Scanf(void); 
+int determine_user_score(char,char);
+int determine_comp_score(char,char);
+int determine_tie_score(char,char);
+
+
+//Local statements / get inputs, process and then output
+int main(void) 
+{
+ char user_Choice = ' ';
+ char comp_Choice = ' ';
+ char outcome = ' '; 
+ int user_score = 0;
+ int comp_score = 0;
+ int tie_score = 0;
+
+ printf("Let’s play a game of Rock/Paper/Scissors\n\n");
+
+    do {
+        //Get user input
+        printf("Enter the R,P,S, or Q (for quit):\n");
+        scanf("%c", &user_Choice);
+        user_Choice = toupper(user_Choice);
+             if(flush_Scanf())
+                    {
+                      user_Choice = 'f';
+                    }
+
+             if (user_Choice =='R' || user_Choice == 'S' || user_Choice =='P' || user_Choice == 'Q')
+                    {
+                      ;                  
+                    }
+             else
+                    {
+                      printf("\nError: Invalid choice, try again.\n");
+                    }
+        //Get comp input
+        comp_Choice = determine_Comp_Choice (comp_Choice);
+
+        //determine outcome for two choices
+        outcome = determine_Outcome(user_Choice, comp_Choice);
+
+        //determine score number for a user and a computer 
+        user_score = determine_user_score(user_Choice,comp_Choice) + user_score;
+        comp_score = determine_comp_score(user_Choice,comp_Choice) + comp_score;
+
+        //determine score rate for a tie
+        tie_score = determine_tie_score(user_Choice,comp_Choice) + tie_score;
+        }
+   while (user_Choice != 'Q');
+        //Display the result
+         printf("\nYou won %d times, the computer won %d times and it was a tie %d times.\nThank you for playing!", user_score, comp_score, tie_score); 
+   return 0;  
+}//end main
+
+
+
+//Function declaration area
+
+/*
+* Function Name: flush_Scanf
+*
+* Input Parameters: one integer value
+*
+* Description: this function flushes or clears the output buffer of the stream
+*
+* Return Value: it returns 0 if successful 
+*/
+int flush_Scanf()
+{
+int ret = 0;
+	  while(getchar() != '\n') ret = 1;
+  	return ret;
+}//end function
+
+
+/*
+* Function Name: determine_Comp_Choice
+*
+* Input Parameters: one character value
+*
+* Description: this function determines the computer’s choice for R, P, or S
+*
+* Return Value: a character value representing the computer's choice
+*/
+char determine_Comp_Choice (char comp_Choice)
+{
+  srand(time(NULL));
+  char choice;
+  switch(rand() % 3)
+  {
+    case 0:
+    choice ='0';
+    break;
+
+    case 1:
+    choice ='1';
+    break;
+
+    case 2:
+    choice ='2';
+    break;
+  }
+
+  if(choice == '0')
+  {
+    comp_Choice = 'P';
+  }
+  else if(choice == '1' )
+  {
+    comp_Choice = 'R';
+  }
+  else 
+  {
+    comp_Choice = 'S';
+  }
+	return comp_Choice;
+}//end function
+
+
+/*
+* Function Name: determine_Outcome
+*
+* Input Parameters: two characters value
+*
+* Description: This function determines the outcome for two choices and prompt that     *              outcome to the user
+*
+* Return Value: it returns empty character
+*/
+char determine_Outcome (char user_Choice,char comp_Choice)
+{
+  if (user_Choice == 'P' && comp_Choice == 'P')
+      {
+        printf("\nYou picked Paper, the computer picked Paper.\nWe picked the same thing, it is a tie.\n\n");
+      }     
+
+  if (user_Choice == 'R' && comp_Choice == 'R')
+      {
+        printf("\nYou picked Rock, the computer picked Rock.\nWe picked the same thing, it is a tie.\n\n");
+      }
+      
+  if (user_Choice == 'S' && comp_Choice == 'S')
+     {
+        printf("\nYou picked Scissors,, the computer picked Scissors.\nWe picked the same thing, it is a tie.\n\n");
+     }
+     
+  if (user_Choice == 'P' && comp_Choice == 'R')
+     {
+        printf("\nYou picked Paper, the computer picked Rock.\nPaper covers Rock, you win!\n\n");
+     }
+      
+  if (user_Choice == 'R' && comp_Choice == 'S')
+     {
+        printf("\nYou picked Rock, the computer picked Scissors.\nRock breaks Scissors, you win!\n\n");
+     }
+     
+  if (user_Choice == 'S' && comp_Choice == 'P')
+     {
+        printf("\nYou picked Scissors, the computer picked Paper.\nScissors cut Paper, you win!\n\n");
+     }
+     
+  if (user_Choice == 'R' && comp_Choice == 'P')
+     {
+        printf("\nYou picked Rock, the computer picked Paper.\nPaper covers Rock, the computer wins!\n\n");
+     }
+     
+  if (user_Choice == 'S' && comp_Choice == 'R')
+     {
+        printf("\nYou picked Scissors, the computer picked Rock.\nRock breaks Scissors, the computer wins!\n\n");
+     }
+     
+  if (user_Choice == 'P' && comp_Choice == 'S')
+     {
+        printf("\nYou picked Paper, the computer picked Scissors.\nScissors cut Paper, the computer wins!\n\n");
+     }
+  return ' ';
+}//end function
+
+
+/*
+* Function Name: determine_user_score
+*
+* Input Parameters: two characters value
+*
+* Description: this function compute score number for a user  
+*
+* Return Value: integer for the user score number
+*/
+int determine_user_score( char user_Choice,char comp_Choice)
+{
+ int user_score = 0;
+
+    if ((comp_Choice == 'R' && user_Choice == 'P') || (comp_Choice == 'S' && user_Choice == 'R') || (comp_Choice == 'P' && user_Choice == 'S'))
+        {
+          return ++user_score;   
+        } 
+
+    else 
+        {
+          ;
+        }
+    return user_score;  
+}//end function
+
+
+/*
+* Function Name: determine_comp_score
+*
+* Input Parameters: two characters value
+*
+* Description: this function compute score number for a computer 
+*
+* Return Value: integer for the computer score number
+*/
+int determine_comp_score( char user_Choice,char comp_Choice)
+{
+int comp_score = 0;
+
+      if ((comp_Choice == 'P' && user_Choice == 'R') || (comp_Choice == 'R' && user_Choice == 'S') || (comp_Choice == 'S' && user_Choice == 'P'))
+            {
+                return ++comp_score;
+            }
+
+      else 
+            {
+                ;
+            }
+      return comp_score;  
+}//end function
+
+
+/*
+* Function Name: determine_tie_score
+*
+* Input Parameters: two characters value
+*
+* Description: this function compute score number for a tie 
+*
+* Return Value: integer for the user score number
+*/
+int determine_tie_score( char user_Choice,char comp_Choice)
+{
+int tie_score = 0;
+
+      if (user_Choice == comp_Choice)
+          {
+              return ++tie_score;
+          }
+
+      else 
+          {
+              ;
+          }
+      return tie_score;  
+}//end function
